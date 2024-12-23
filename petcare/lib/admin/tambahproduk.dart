@@ -68,6 +68,7 @@ class _TambahProdukPageState extends State<TambahProdukPage> {
                   style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 TextFormField(
+                  style: const TextStyle(color: Colors.white),
                   controller: _namaController,
                   decoration: const InputDecoration(
                     hintText: 'Masukkan nama produk', hintStyle: TextStyle(color: Colors.white),
@@ -88,6 +89,7 @@ class _TambahProdukPageState extends State<TambahProdukPage> {
                   style: TextStyle( color: Colors.white ,fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 TextFormField(
+                  style: const TextStyle(color: Colors.white),
                   controller: _hargaController,
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
@@ -113,6 +115,7 @@ class _TambahProdukPageState extends State<TambahProdukPage> {
                   style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 TextFormField(
+                  style: const TextStyle(color: Colors.white),
                   controller: _deskripsiController,
                   maxLines: 4,
                   decoration: const InputDecoration(

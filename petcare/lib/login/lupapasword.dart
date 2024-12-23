@@ -51,6 +51,7 @@ class _LupapaswordPagesState extends State<LupapaswordPages> {
                 const SizedBox(height: 30),
                 // Input username
                 TextField(
+                  style: const TextStyle(color: Colors.white),
                   controller: _usernameController,
                   decoration: InputDecoration(
                     filled: true,
@@ -75,6 +76,7 @@ class _LupapaswordPagesState extends State<LupapaswordPages> {
                 const SizedBox(height: 20),
                 // Input password baru
                 TextField(
+                  style: const TextStyle(color: Colors.white),
                   controller: _newPasswordController,
                   obscureText: true,
                   decoration: InputDecoration(
@@ -100,6 +102,7 @@ class _LupapaswordPagesState extends State<LupapaswordPages> {
                 const SizedBox(height: 20),
                 // Input konfirmasi password
                 TextField(
+                  style: const TextStyle(color: Colors.white),
                   controller: _confirmPasswordController,
                   obscureText: true,
                   decoration: InputDecoration(

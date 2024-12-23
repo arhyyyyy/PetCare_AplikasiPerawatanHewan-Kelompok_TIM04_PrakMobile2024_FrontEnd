@@ -52,6 +52,7 @@ class _RegistrasiPagesState extends State<RegistrasiPages> {
                 const SizedBox(height: 30),
                 // Input username
                 TextField(
+                  style: const TextStyle(color: Colors.white),
                   controller: _usernameController,
                   decoration: InputDecoration(
                     filled: true,
@@ -76,6 +77,7 @@ class _RegistrasiPagesState extends State<RegistrasiPages> {
                 const SizedBox(height: 20),
                 // Input password
                 TextField(
+                  style: const TextStyle(color: Colors.white),
                   controller: _passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
@@ -101,6 +103,7 @@ class _RegistrasiPagesState extends State<RegistrasiPages> {
                 const SizedBox(height: 20),
                 // Konfirmasi password
                 TextField(
+                  style: const TextStyle(color: Colors.white),
                   controller: _confirmPasswordController,
                   obscureText: true,
                   decoration: InputDecoration(

@@ -42,10 +42,6 @@ class _DataHewanPageState extends State<DataHewanPage> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: const Color(0xFF125587),
-        title: const Text(
-          'Daftar Hewan Peliharaan',
-          style: TextStyle(color: Colors.white),
-        ),
       ),
       body: Container(
         color: const Color(0xFF125587),

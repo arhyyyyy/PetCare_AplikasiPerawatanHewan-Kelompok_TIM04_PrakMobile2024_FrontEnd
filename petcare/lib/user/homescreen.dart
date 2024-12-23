@@ -4,7 +4,7 @@ import 'package:petcare/user/lihathewan.dart';
 import 'package:petcare/user/produk.dart';
 import 'package:petcare/user/profilescreen.dart';
 import 'package:petcare/user/tambahhewan.dart';
-
+import 'package:petcare/login/loginpages.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static const List<Widget> _pages = <Widget>[
     Jadwalscreen(), // Halaman Jadwal
     HomeScreenContent(), // Isi utama halaman Home
-    ProfileScreen()// Halaman Profil
+    ProfileScreen(), // Halaman Profil
   ];
 
   void _onItemTapped(int index) {
@@ -29,9 +29,93 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  // Fungsi untuk menampilkan konfirmasi logout
+  void _showLogoutDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Konfirmasi Logout'),
+          content: const Text('Apakah Anda yakin ingin logout?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Menutup dialog
+              },
+              child: const Text('Batal'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Navigasi ke halaman login dan hapus semua route sebelumnya
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPages()),
+                  (route) => false,
+                );
+              },
+              child: const Text('Logout'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('PetCare', style: TextStyle(color: Colors.white)),
+        backgroundColor: const Color(0xFF125587),
+        centerTitle: true,
+      ),
+      drawer: _selectedIndex == 1 // Tampilkan drawer hanya di menu Home
+          ? Drawer(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  DrawerHeader(
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF125587),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Ganti CircleAvatar dengan gambar dari assets
+                        Image.asset(
+                          'assets/images/HomeScreen.png', // Ganti dengan path gambar Anda
+                          width: 70,
+                          height: 70,
+                        ),
+                        const SizedBox(height: 10),
+                        const Text(
+                          'PetCare',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.close), // Ikon untuk tombol tutup
+                    title: const Text('Tutup Sidebar'),
+                    onTap: () {
+                      Navigator.pop(context); // Menutup drawer
+                    },
+                  ),
+                  const Divider(),
+                  ListTile(
+                    leading: const Icon(Icons.exit_to_app),
+                    title: const Text('Logout'),
+                    onTap: _showLogoutDialog, // Tampilkan dialog konfirmasi logout
+                  ),
+                ],
+              ),
+            )
+          : null, // Tidak ada drawer di halaman selain Home
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
@@ -62,8 +146,8 @@ class HomeScreenContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.all(10.0),
-        color: const Color((0xFF125587)),
+        padding: const EdgeInsets.all(10.0),
+        color: const Color(0xFF125587),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -97,8 +181,7 @@ class HomeScreenContent extends StatelessWidget {
                 foregroundColor: Colors.black,
               ),
               onPressed: () {
-                Navigator.push(context, 
-                MaterialPageRoute(builder: (context) => const TambahHewan()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const TambahHewan()));
               },
               icon: const Icon(Icons.add),
               label: const Text(
@@ -114,8 +197,7 @@ class HomeScreenContent extends StatelessWidget {
                 foregroundColor: Colors.black,
               ),
               onPressed: () {
-                Navigator.push(context, 
-                MaterialPageRoute(builder: (context) => const LihatHewan()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const LihatHewan()));
               },
               icon: const Icon(Icons.remove_red_eye),
               label: const Text(
@@ -131,8 +213,7 @@ class HomeScreenContent extends StatelessWidget {
                 foregroundColor: Colors.black,
               ),
               onPressed: () {
-                Navigator.push(context, 
-                MaterialPageRoute(builder: (context) => const ProdukPages()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const ProdukPages()));
               },
               icon: const Icon(Icons.card_travel),
               label: const Text(

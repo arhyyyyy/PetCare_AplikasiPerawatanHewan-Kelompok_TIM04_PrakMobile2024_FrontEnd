@@ -3,7 +3,6 @@ import 'package:petcare/admin/homescreenadmin.dart';
 import 'package:petcare/login/lupapasword.dart';
 import 'package:petcare/login/registrasipages.dart';
 import 'package:petcare/user/homescreen.dart';
-// Tambahkan halaman admin
 
 class LoginPages extends StatefulWidget {
   const LoginPages({super.key});
@@ -22,6 +21,9 @@ class _LoginPagesState extends State<LoginPages> {
     'admin': {'password': 'admin123', 'role': 'admin'},
     'user': {'password': 'user123', 'role': 'user'},
   };
+
+  // Variable untuk mengontrol visibilitas password
+  bool _isPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +72,7 @@ class _LoginPagesState extends State<LoginPages> {
                 const SizedBox(height: 5),
                 TextField(
                   controller: _usernameController,
+                  style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: const Color(0xFF125587),
@@ -102,7 +105,8 @@ class _LoginPagesState extends State<LoginPages> {
                 const SizedBox(height: 5),
                 TextField(
                   controller: _passwordController,
-                  obscureText: true,
+                  obscureText: !_isPasswordVisible,
+                  style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: const Color(0xFF125587),
@@ -121,7 +125,17 @@ class _LoginPagesState extends State<LoginPages> {
                       borderSide: const BorderSide(color: Colors.white),
                     ),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 15),
-                    suffixIcon: const Icon(Icons.visibility_off, color: Colors.white),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),

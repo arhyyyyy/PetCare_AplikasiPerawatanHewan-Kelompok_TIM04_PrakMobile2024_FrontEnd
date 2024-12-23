@@ -2,142 +2,255 @@ import 'package:flutter/material.dart';
 import 'package:petcare/admin/datahewan.dart';
 import 'package:petcare/admin/datauser.dart';
 import 'package:petcare/admin/produkpage.dart';
+import 'package:petcare/admin/profil_admin.dart';
 import 'package:petcare/login/loginpages.dart';
-import 'package:petcare/admin/jadwal.dart';
+import 'package:petcare/admin/jadwal.dart';// Import halaman profil
 
-class HomeScreenAdmin extends StatelessWidget {
+class HomeScreenAdmin extends StatefulWidget {
   const HomeScreenAdmin({super.key});
+
+  @override
+  _HomeScreenAdminState createState() => _HomeScreenAdminState();
+}
+
+class _HomeScreenAdminState extends State<HomeScreenAdmin> {
+  int _currentIndex = 0; // Indeks halaman aktif
+
+  // Daftar halaman untuk navigasi
+  final List<Widget> _pages = [
+    HomePage(),
+    const DataUserPage(),
+    const DataHewanPage(),
+    const ProdukPagesAdmin(),
+    JadwalAdminPage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF125587),
       appBar: AppBar(
-        title: const Text('PetCare', style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF125587),
-        centerTitle: true,
-        elevation: 0,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFF125587),
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: Colors.white),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: const BoxDecoration(
+                color: Color(0xFF125587),
               ),
-              padding: const EdgeInsets.all(20),
-              child: const Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Selamat Datang Di',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          'Home admin',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          'PetCare',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 35,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const CircleAvatar(
+                        radius: 35,
+                        backgroundImage: AssetImage('assets/images/HomeScreen.png'),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close, color: Colors.white),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
                   ),
-                  CircleAvatar(
-                    radius: 80,
-                    backgroundImage: AssetImage('assets/images/HomeScreen.png'),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Admin PetCare',
+                    style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ],
               ),
             ),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('Profil'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ProfileAdminPage()),
+                );
+              },
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Keluar'),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Konfirmasi'),
+                      content: const Text('Apakah Anda yakin ingin keluar?'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Menutup dialog
+                          },
+                          child: const Text('Batal'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(builder: (context) => const LoginPages()),
+                              (route) => false,
+                            );
+                          },
+                          child: const Text('Keluar'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      body: SafeArea(
+        child: _pages[_currentIndex], // Menampilkan halaman berdasarkan indeks
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              padding: const EdgeInsets.all(20),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Data User',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.pets),
+            label: 'Data Hewan',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: 'Produk',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.schedule),
+            label: 'Jadwal',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Halaman Home
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFF125587),
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(color: Colors.white),
+            ),
+            padding: const EdgeInsets.all(20),
+            child: const Row(
               children: [
-                _buildMenuButton(
-                  context,
-                  title: 'Data User',
-                  color: Colors.yellow,
-                  icon: Icons.person,
-                  page: const DataUserPage(),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Selamat Datang Di',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        'Home admin',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        'PetCare',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 35,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                _buildMenuButton(
-                  context,
-                  title: 'Data Hewan',
-                  color: Colors.orange,
-                  icon: Icons.pets,
-                  page: const DataHewanPage(),
-                ),
-                _buildMenuButton(
-                  context,
-                  title: 'Produk',
-                  color: Colors.green,
-                  icon: Icons.shopping_cart,
-                  page: const ProdukPagesAdmin(),
-                ),
-                _buildMenuButton(
-                  context,
-                  title: 'Jadwal',
-                  color: Colors.lightBlue,
-                  icon: Icons.schedule,
-                  page: JadwalAdminPage(),
+                CircleAvatar(
+                  radius: 80,
+                  backgroundImage: AssetImage('assets/images/HomeScreen.png'),
                 ),
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 20.0),
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginPages()),
-                  (route) => false,
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.blue,
-                backgroundColor: Colors.white,
-                side: const BorderSide(color: Colors.blue),
-              ),
-              child: const Text('Keluar'),
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        child: IconButton(
-          onPressed: () {
-            // Logika untuk tombol home
-          },
-          icon: const Icon(Icons.home, color: Colors.black, size: 45),
         ),
-      ),
+        Expanded(
+          child: GridView.count(
+            crossAxisCount: 2,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            padding: const EdgeInsets.all(20),
+            children: [
+              _buildMenuButton(
+                context,
+                title: 'Data User',
+                color: Colors.yellow,
+                icon: Icons.person,
+                page: const DataUserPage(),
+              ),
+              _buildMenuButton(
+                context,
+                title: 'Data Hewan',
+                color: Colors.orange,
+                icon: Icons.pets,
+                page: const DataHewanPage(),
+              ),
+              _buildMenuButton(
+                context,
+                title: 'Produk',
+                color: Colors.green,
+                icon: Icons.shopping_cart,
+                page: const ProdukPagesAdmin(),
+              ),
+              _buildMenuButton(
+                context,
+                title: 'Jadwal',
+                color: Colors.lightBlue,
+                icon: Icons.schedule,
+                page: JadwalAdminPage(),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -158,7 +271,7 @@ class HomeScreenAdmin extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(30),
         ),
         padding: const EdgeInsets.all(20),
       ),

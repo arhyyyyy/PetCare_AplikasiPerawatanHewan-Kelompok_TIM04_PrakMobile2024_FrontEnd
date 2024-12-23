@@ -7,13 +7,6 @@ class Jadwalscreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: const Color( 0xFF125587),
-        title: const Text('Jadwal Konsultasi',style: TextStyle(
-          color: Colors.white
-        ),),
-      ),
       body: Container(
         color: const Color(0xFF125587), // Latar belakang dengan warna solid
         padding: const EdgeInsets.all(16.0),

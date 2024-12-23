@@ -21,34 +21,27 @@ class _ProdukPagesAdminState extends State<ProdukPagesAdmin> {
       'nama': 'Cat food',
       'deskripsi': 'Makanan berkualitas tinggi untuk kucing',
       'harga': 'Rp.150.000',
-      'gambar': 'assets/images/catfood.png',
+      'gambar': 'assets/images/catfood.png', // Ganti dengan path gambar Anda
     },
     {
-      'nama': 'Cat food',
-      'deskripsi': 'Makanan berkualitas tinggi untuk kucing',
-      'harga': 'Rp.150.000',
-      'gambar': 'assets/images/catfood.png',
+      'nama': 'Dog food',
+      'deskripsi': 'Makanan sehat untuk anjing',
+      'harga': 'Rp.120.000',
+      'gambar': 'assets/images/dogfood.png',
     },
     {
-      'nama': 'Cat food',
-      'deskripsi': 'Makanan berkualitas tinggi untuk kucing',
-      'harga': 'Rp.150.000',
-      'gambar': 'assets/images/catfood.png',
+      'nama': 'Dog food',
+      'deskripsi': 'Makanan sehat untuk anjing',
+      'harga': 'Rp.120.000',
+      'gambar': 'assets/images/dogfood.png',
     },
   ];
-  
-  get existingImageFile => null;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF125587),
-        title: const Text(
-          'Produk',
-          style: TextStyle(color: Colors.white),
-        ),
-        centerTitle: true,
       ),
       body: Container(
         color: const Color(0xFF125587),
@@ -114,58 +107,44 @@ class _ProdukPagesAdminState extends State<ProdukPagesAdmin> {
                     ),
                     Column(
                       children: [
-                        ElevatedButton(
+                        IconButton(
                           onPressed: () {
                             Navigator.push(
-  context,
-  MaterialPageRoute(
-    builder: (context) => EditProdukPage(
-      namaProduk: produk['nama']!, // Mengirimkan data produk yang dipilih
-      hargaProduk: produk['harga']!,
-      deskripsiProduk: produk['deskripsi']!,
-      imageFile: null, // Ganti dengan gambar yang sesuai jika ada
-    ),
-  ),
-).then((updatedProduct) {
-  if (updatedProduct != null) {
-    // Update produk di produkList berdasarkan index yang dipilih
-    setState(() {
-      produkList[index] = {
-        'nama': updatedProduct['nama'],
-        'harga': updatedProduct['harga'],
-        'deskripsi': updatedProduct['deskripsi'],
-        'gambar': updatedProduct['image'] ?? produk['gambar'], // Menggunakan gambar lama jika tidak ada update
-      };
-    });
-  }
-});
-
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditProdukPage(
+                                  namaProduk: produk['nama']!,
+                                  hargaProduk: produk['harga']!,
+                                  deskripsiProduk: produk['deskripsi']!,
+                                  imageFile: null,
+                                ),
+                              ),
+                            ).then((updatedProduct) {
+                              if (updatedProduct != null) {
+                                setState(() {
+                                  produkList[index] = {
+                                    'nama': updatedProduct['nama'],
+                                    'harga': updatedProduct['harga'],
+                                    'deskripsi': updatedProduct['deskripsi'],
+                                    'gambar': updatedProduct['image'] ??
+                                        produk['gambar'],
+                                  };
+                                });
+                              }
+                            });
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: const Text('edit',
-                              style: TextStyle(fontSize: 12)),
+                          icon: const Icon(Icons.edit, color: Colors.blue),
+                          tooltip: 'Edit Produk',
                         ),
-                        const SizedBox(height: 8),
-                        ElevatedButton(
+                        IconButton(
                           onPressed: () {
                             _confirmDelete(context, index);
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: const Text('hapus',
-                              style: TextStyle(fontSize: 12)),
+                          icon: const Icon(Icons.delete, color: Colors.red),
+                          tooltip: 'Hapus Produk',
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -176,8 +155,10 @@ class _ProdukPagesAdminState extends State<ProdukPagesAdmin> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.white,
         onPressed: () {
-          Navigator.push(context, 
-          MaterialPageRoute(builder: (context) => const TambahProdukPage()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const TambahProdukPage()),
+          );
         },
         child: const Icon(Icons.add, color: Colors.black),
       ),

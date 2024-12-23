@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:petcare/login/loginpages.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -8,25 +7,31 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: const Color(0xFF125587), // Latar belakang dengan warna solid
+        color: const Color(0xFF125587),
         child: Column(
           children: [
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
+            // Avatar Profil
             const CircleAvatar(
-              radius: 50,
+              radius: 60,
               backgroundColor: Colors.white,
-              child: Icon(Icons.person, size: 50, color: Colors.blue),
+              child: Icon(
+                Icons.person,
+                size: 60,
+                color: Color(0xFF125587),
+              ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 15),
             const Text(
-              'Profil',
+              'M. Imam Afwan Hasanudin',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 24,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 19),
+            const SizedBox(height: 20),
+            // Form Profil
             Container(
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.2),
@@ -37,43 +42,35 @@ class ProfileScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildTextField('Nama Pengguna'),
+                  _buildTextField('Nama Lengkap', 'M. Imam Afwan Hasanudin'),
                   const SizedBox(height: 15),
-                  _buildTextField('Username'),
+                  _buildTextField('Username', 'Imam'),
                   const SizedBox(height: 15),
-                  _buildTextField('No Telpon'),
+                  _buildTextField('Nomor Telepon', '081234567890'),
                 ],
               ),
             ),
-            // Tombol Save Profile
-            ElevatedButton(
+            const SizedBox(height: 20),
+            // Tombol Simpan Profil
+            ElevatedButton.icon(
               onPressed: () {
-                // Fungsi untuk menyimpan profil, bisa menambahkan aksi di sini
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Profil berhasil disimpan'),
-                  backgroundColor: Colors.green),
-                  
+                  const SnackBar(
+                    content: Text('Profil berhasil disimpan'),
+                    backgroundColor: Colors.green,
+                  ),
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF125587),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                backgroundColor: Colors.white,
+                foregroundColor: const Color(0xFF125587),
+                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
-              child: const Text('Simpan Profil'),
-            ),
-            const SizedBox(height: 10),
-            // Tombol Logout dengan ikon
-            IconButton(
-              icon: const Icon(Icons.exit_to_app, color: Colors.white, size: 30),
-              onPressed: () {
-                Navigator.pushAndRemoveUntil(context,
-                    MaterialPageRoute(builder: (context) => const LoginPages()),
-                    (route) => false);
-              },
+              icon: const Icon(Icons.save, size: 20),
+              label: const Text('Simpan Profil'),
             ),
           ],
         ),
@@ -81,8 +78,8 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  // Fungsi untuk membuat TextField secara dinamis
-  Widget _buildTextField(String label) {
+  // Fungsi untuk membuat TextField dengan nilai awal
+  Widget _buildTextField(String label, String initialValue) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -91,10 +88,13 @@ class ProfileScreen extends StatelessWidget {
           style: const TextStyle(
             color: Colors.white,
             fontSize: 16,
+            fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 5),
         TextField(
+          controller: TextEditingController(text: initialValue),
+          readOnly: true, // Membuat field hanya untuk membaca
           decoration: InputDecoration(
             filled: true,
             fillColor: Colors.white,

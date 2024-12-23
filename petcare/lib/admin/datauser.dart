@@ -35,12 +35,7 @@ class _DataPenggunaPageState extends State<DataUserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
         backgroundColor: const Color(0xFF125587),
-        title: const Text(
-          'Daftar Pengguna',
-          style: TextStyle(color: Colors.white),
-        ),
       ),
       body: Container(
         decoration: const BoxDecoration(
