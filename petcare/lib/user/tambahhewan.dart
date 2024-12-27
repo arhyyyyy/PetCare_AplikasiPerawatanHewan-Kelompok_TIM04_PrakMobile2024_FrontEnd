@@ -10,15 +10,15 @@ class TambahHewan extends StatelessWidget {
         centerTitle: true,
         backgroundColor: const Color(0xFF125587),
         title: const Text('PetCare', style: TextStyle(color: Colors.white)),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Container(
-        color: const Color(0xFF125587), // Mengubah background menjadi biru
+        color: const Color(0xFF125587), 
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
-            // Teks "Tambahkan Hewan Peliharaan"
             const Center(
               child: Text(
                 'Tambahkan Hewan Peliharaan',
@@ -37,8 +37,10 @@ class TambahHewan extends StatelessWidget {
               decoration: InputDecoration(
                 labelText: 'Nama hewan',
                 hintText: 'Masukkan nama hewan',
-                labelStyle: TextStyle(color: Colors.white),
-                hintStyle: TextStyle(color: Colors.white54),
+                labelStyle: TextStyle(color: Colors.black),
+                hintStyle: TextStyle(color: Colors.grey),
+                filled: true,
+                fillColor: Colors.white,
                 border: OutlineInputBorder(),
               ),
             ),
@@ -48,19 +50,10 @@ class TambahHewan extends StatelessWidget {
               decoration: InputDecoration(
                 labelText: 'Jenis hewan',
                 hintText: 'Jenis hewan',
-                labelStyle: TextStyle(color: Colors.white),
-                hintStyle: TextStyle(color: Colors.white54),
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 20),
-            // Input riwayat hewan
-            const TextField(
-              decoration: InputDecoration(
-                labelText: 'Ras',
-                hintText: 'Ras',
-                labelStyle: TextStyle(color: Colors.white),
-                hintStyle: TextStyle(color: Colors.white54),
+                labelStyle: TextStyle(color: Colors.black),
+                hintStyle: TextStyle(color: Colors.grey),
+                filled: true,
+                fillColor: Colors.white,
                 border: OutlineInputBorder(),
               ),
             ),
@@ -68,10 +61,25 @@ class TambahHewan extends StatelessWidget {
             // Input ras hewan
             const TextField(
               decoration: InputDecoration(
+                labelText: 'Ras',
+                hintText: 'Ras',
+                labelStyle: TextStyle(color: Colors.black),
+                hintStyle: TextStyle(color: Colors.grey),
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 20),
+            // Input riwayat penyakit
+            const TextField(
+              decoration: InputDecoration(
                 labelText: 'Riwayat Penyakit',
-                hintText: 'Masukan Riawayat Penyakit Jika Ada',
-                labelStyle: TextStyle(color: Colors.white),
-                hintStyle: TextStyle(color: Colors.white54),
+                hintText: 'Masukkan Riwayat Penyakit Jika Ada',
+                labelStyle: TextStyle(color: Colors.black),
+                hintStyle: TextStyle(color: Colors.grey),
+                filled: true,
+                fillColor: Colors.white,
                 border: OutlineInputBorder(),
               ),
             ),
@@ -81,12 +89,15 @@ class TambahHewan extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Data Hewan Berhasil ditambahkan'),
-                    backgroundColor: Colors.green,),
+                    const SnackBar(
+                      content: Text('Data Hewan Berhasil ditambahkan'),
+                      backgroundColor: Colors.green,
+                    ),
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.blue[700], backgroundColor: Colors.white,
+                  foregroundColor: Colors.blue[700],
+                  backgroundColor: Colors.white,
                 ),
                 child: const Text('Simpan'),
               ),

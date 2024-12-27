@@ -66,10 +66,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('PetCare', style: TextStyle(color: Colors.white)),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xFF125587),
         centerTitle: true,
       ),
-      drawer: _selectedIndex == 1 // Tampilkan drawer hanya di menu Home
+      drawer: _selectedIndex == 1
           ? Drawer(
               child: ListView(
                 padding: EdgeInsets.zero,
@@ -81,9 +82,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Ganti CircleAvatar dengan gambar dari assets
                         Image.asset(
-                          'assets/images/HomeScreen.png', // Ganti dengan path gambar Anda
+                          'assets/images/HomeScreen.png',
                           width: 70,
                           height: 70,
                         ),
@@ -100,22 +100,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.close), // Ikon untuk tombol tutup
+                    leading: const Icon(Icons.close),
                     title: const Text('Tutup Sidebar'),
                     onTap: () {
-                      Navigator.pop(context); // Menutup drawer
+                      Navigator.pop(context);
                     },
                   ),
                   const Divider(),
                   ListTile(
                     leading: const Icon(Icons.exit_to_app),
                     title: const Text('Logout'),
-                    onTap: _showLogoutDialog, // Tampilkan dialog konfirmasi logout
+                    onTap: _showLogoutDialog, 
                   ),
                 ],
               ),
             )
-          : null, // Tidak ada drawer di halaman selain Home
+          : null,
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
@@ -170,7 +170,7 @@ class HomeScreenContent extends StatelessWidget {
               ),
             ),
             Image.asset(
-              'assets/images/HomeScreen.png', // Pastikan gambar Anda tersedia di folder assets
+              'assets/images/HomeScreen.png', 
               height: 300,
             ),
             const SizedBox(height: 20),

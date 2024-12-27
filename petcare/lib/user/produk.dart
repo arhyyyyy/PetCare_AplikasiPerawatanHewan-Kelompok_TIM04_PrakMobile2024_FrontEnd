@@ -29,11 +29,12 @@ class ProdukPages extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
         title: const Text("Produk & Layanan",style:   TextStyle(color: Colors.white),),
         backgroundColor: const Color(0xFF125587),
       ),
       body: Container(
-        color: const Color(0xFF125587), // Latar belakang terang
+        color: const Color(0xFF125587),
         child: ListView.builder(
           padding: const EdgeInsets.all(10.0),
           itemCount: produkList.length,
@@ -80,7 +81,7 @@ class ProdukPages extends StatelessWidget {
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: Colors.green,
+                              color: Color(0xFF125587),
                             ),
                           ),
                         ],

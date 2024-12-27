@@ -41,6 +41,7 @@ class _ProdukPagesAdminState extends State<ProdukPagesAdmin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xFF125587),
       ),
       body: Container(

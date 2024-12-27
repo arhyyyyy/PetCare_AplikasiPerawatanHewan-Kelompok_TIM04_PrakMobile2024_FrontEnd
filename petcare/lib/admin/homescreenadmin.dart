@@ -4,7 +4,7 @@ import 'package:petcare/admin/datauser.dart';
 import 'package:petcare/admin/produkpage.dart';
 import 'package:petcare/admin/profil_admin.dart';
 import 'package:petcare/login/loginpages.dart';
-import 'package:petcare/admin/jadwal.dart';// Import halaman profil
+import 'package:petcare/admin/jadwal.dart'; // Import halaman jadwal
 
 class HomeScreenAdmin extends StatefulWidget {
   const HomeScreenAdmin({super.key});
@@ -16,105 +16,114 @@ class HomeScreenAdmin extends StatefulWidget {
 class _HomeScreenAdminState extends State<HomeScreenAdmin> {
   int _currentIndex = 0; // Indeks halaman aktif
 
-  // Daftar halaman untuk navigasi
   final List<Widget> _pages = [
-    HomePage(),
+    const HomePage(),
     const DataUserPage(),
     const DataHewanPage(),
     const ProdukPagesAdmin(),
-    JadwalAdminPage(),
+    const JadwalAdminPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF125587),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF125587),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(
-                color: Color(0xFF125587),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      appBar: _currentIndex == 0
+          ? AppBar(
+              iconTheme: const IconThemeData(color: Colors.white),
+              backgroundColor: const Color(0xFF125587),
+            )
+          : null,
+      drawer: _currentIndex == 0
+          ? Drawer(
+              child: ListView(
+                padding: EdgeInsets.zero,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const CircleAvatar(
-                        radius: 35,
-                        backgroundImage: AssetImage('assets/images/HomeScreen.png'),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.close, color: Colors.white),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
+                  DrawerHeader(
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF125587),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const CircleAvatar(
+                              radius: 35,
+                              backgroundImage:
+                                  AssetImage('assets/images/HomeScreen.png'),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.close, color: Colors.white),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        const Text(
+                          'Admin PetCare',
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Admin PetCare',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ListTile(
+                    leading: const Icon(Icons.person),
+                    title: const Text('Profil'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ProfileAdminPage()),
+                      );
+                    },
+                  ),
+                  const Divider(),
+                  ListTile(
+                    leading: const Icon(Icons.logout),
+                    title: const Text('Keluar'),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Konfirmasi'),
+                            content: const Text(
+                                'Apakah Anda yakin ingin keluar?'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Batal'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LoginPages()),
+                                    (route) => false,
+                                  );
+                                },
+                                child: const Text('Keluar'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
                   ),
                 ],
               ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Profil'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ProfileAdminPage()),
-                );
-              },
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('Keluar'),
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: const Text('Konfirmasi'),
-                      content: const Text('Apakah Anda yakin ingin keluar?'),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop(); // Menutup dialog
-                          },
-                          child: const Text('Batal'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(builder: (context) => const LoginPages()),
-                              (route) => false,
-                            );
-                          },
-                          child: const Text('Keluar'),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-            ),
-          ],
-        ),
-      ),
+            )
+          : null,
       body: SafeArea(
-        child: _pages[_currentIndex], // Menampilkan halaman berdasarkan indeks
+        child: _pages[_currentIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -153,24 +162,25 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
   }
 }
 
-// Halaman Home
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: EdgeInsets.all(screenWidth * 0.05),
           child: Container(
             decoration: BoxDecoration(
               color: const Color(0xFF125587),
               borderRadius: BorderRadius.circular(15),
               border: Border.all(color: Colors.white),
             ),
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(screenWidth * 0.05),
             child: const Row(
               children: [
                 Expanded(
@@ -214,7 +224,7 @@ class HomePage extends StatelessWidget {
         ),
         Expanded(
           child: GridView.count(
-            crossAxisCount: 2,
+            crossAxisCount: screenWidth > 600 ? 3 : 2,
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
             padding: const EdgeInsets.all(20),
@@ -245,7 +255,7 @@ class HomePage extends StatelessWidget {
                 title: 'Jadwal',
                 color: Colors.lightBlue,
                 icon: Icons.schedule,
-                page: JadwalAdminPage(),
+                page: const JadwalAdminPage(),
               ),
             ],
           ),

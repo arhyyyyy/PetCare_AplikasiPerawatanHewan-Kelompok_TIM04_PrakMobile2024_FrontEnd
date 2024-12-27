@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/services.dart';
 
 class EditProdukPage extends StatefulWidget {
   final String namaProduk;
@@ -46,10 +47,9 @@ class _EditProdukPageState extends State<EditProdukPage> {
     super.dispose();
   }
 
-  // Fungsi untuk memilih gambar dari galeri atau kamera
   Future<void> _pickImage() async {
     final XFile? pickedFile = await _picker.pickImage(
-      source: ImageSource.gallery, // Atau ImageSource.camera untuk menggunakan kamera
+      source: ImageSource.gallery,
     );
     if (pickedFile != null) {
       setState(() {
@@ -64,7 +64,6 @@ class _EditProdukPageState extends State<EditProdukPage> {
       final updatedHarga = _hargaController.text;
       final updatedDeskripsi = _deskripsiController.text;
 
-      // Kirim data yang sudah diperbarui ke halaman sebelumnya
       Navigator.pop(context, {
         'nama': updatedNama,
         'harga': updatedHarga,
@@ -78,7 +77,8 @@ class _EditProdukPageState extends State<EditProdukPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Produk',style: TextStyle(color: Colors.white),),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('Edit Produk', style: TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: const Color(0xFF125587),
       ),
@@ -87,101 +87,117 @@ class _EditProdukPageState extends State<EditProdukPage> {
         padding: const EdgeInsets.all(10.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
             children: [
-              const Text('Nama Produk', style: TextStyle(color: Colors.white)),
-              TextFormField(
-                controller: _namaController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white), // White border
-                  ),
-                  filled: true,
-                  fillColor: Color(0xFF125587), // Background color matching page
-                ),
-                style: const TextStyle(color: Colors.white), // Text color white
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Nama produk tidak boleh kosong';
-                  }
-                  return null;
-                },
-              ),
+              _buildTextField('Nama Produk', _namaController),
               const SizedBox(height: 10),
-              const Text('Harga Produk', style: TextStyle(color: Colors.white)),
-              TextFormField(
-                controller: _hargaController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white), 
-                  ),
-                  filled: true,
-                  fillColor: Color(0xFF125587), 
-                ),
-                style: const TextStyle(color: Colors.white), 
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Harga produk tidak boleh kosong';
-                  }
-                  return null;
-                },
-              ),
+              _buildTextField('Harga Produk', _hargaController),
               const SizedBox(height: 10),
-              const Text('Deskripsi Produk', style: TextStyle(color: Colors.white)),
-              TextFormField(
-                controller: _deskripsiController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                  filled: true,
-                  fillColor: Color(0xFF125587),
-                ),
-                style: const TextStyle(color: Colors.white),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Deskripsi produk tidak boleh kosong';
-                  }
-                  return null;
-                },
-              ),
+              _buildDeskripsiField(),
               const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  // Tombol untuk memilih gambar
-                  ElevatedButton(
-                    onPressed: _pickImage,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue, // Tombol warna biru
-                    ),
-                    child: const Text('Pilih Gambar Produk',style: TextStyle(color: Colors.white),),
-                  ),
-                  const SizedBox(width: 10),
-                  // Tombol Simpan Perubahan
-                  ElevatedButton(
-                    onPressed: _saveChanges,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green, // Tombol warna hijau
-                    ),
-                    child: const Text('Simpan Perubahan',style: TextStyle(color: Colors.white),),
-                  ),
-                ],
-              ),
+              _buildActionButtons(),
               const SizedBox(height: 10),
-              // Menampilkan gambar yang dipilih (jika ada)
-              if (_imageFile != null)
-                Image.file(
-                  _imageFile!,
-                  height: 150,
-                  width: 150,
-                  fit: BoxFit.cover,
-                ),
+              if (_imageFile != null) _buildImagePreview(),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  // Widget untuk membuat TextFormField umum
+  Widget _buildTextField(String label, TextEditingController controller) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: const TextStyle(color: Colors.white)),
+        TextFormField(
+          controller: controller,
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            filled: true,
+            fillColor: Colors.white,
+          ),
+          style: const TextStyle(color: Colors.black),
+          keyboardType: label == 'Harga Produk'
+              ? TextInputType.number
+              : TextInputType.text, // Membatasi input untuk harga ke angka
+          inputFormatters: label == 'Harga Produk'
+              ? [FilteringTextInputFormatter.digitsOnly] // Hanya angka
+              : null,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return '$label tidak boleh kosong';
+            }
+            if (label == 'Harga Produk' && double.tryParse(value) == null) {
+              return 'Masukkan angka yang valid';
+            }
+            return null;
+          },
+        ),
+      ],
+    );
+  }
+
+  // Widget untuk input deskripsi produk
+  Widget _buildDeskripsiField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('Deskripsi Produk', style: TextStyle(color: Colors.white)),
+        TextFormField(
+          controller: _deskripsiController,
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            filled: true,
+            fillColor: Colors.white,
+          ),
+          style: const TextStyle(color: Colors.black),
+          maxLines: null,
+          minLines: 5,
+          keyboardType: TextInputType.multiline,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Deskripsi produk tidak boleh kosong';
+            }
+            return null;
+          },
+        ),
+      ],
+    );
+  }
+
+  // Widget untuk tombol aksi (Pilih Gambar, Simpan)
+  Widget _buildActionButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        ElevatedButton(
+          onPressed: _pickImage,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
+          ),
+          child: const Text('Pilih Gambar Produk', style: TextStyle(color: Colors.white)),
+        ),
+        const SizedBox(width: 10),
+        ElevatedButton(
+          onPressed: _saveChanges,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green,
+          ),
+          child: const Text('Simpan Perubahan', style: TextStyle(color: Colors.white)),
+        ),
+      ],
+    );
+  }
+
+  // Widget untuk menampilkan gambar produk
+  Widget _buildImagePreview() {
+    return Image.file(
+      _imageFile!,
+      height: 150,
+      width: 150,
+      fit: BoxFit.cover,
     );
   }
 }

@@ -13,10 +13,15 @@ class _LupapaswordPagesState extends State<LupapaswordPages> {
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
+  // State untuk mengontrol visibility password
+  bool _isNewPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xFF125587),
         centerTitle: true,
         title: const Text(
@@ -78,12 +83,23 @@ class _LupapaswordPagesState extends State<LupapaswordPages> {
                 TextField(
                   style: const TextStyle(color: Colors.white),
                   controller: _newPasswordController,
-                  obscureText: true,
+                  obscureText: !_isNewPasswordVisible,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: const Color(0xFF125587),
                     hintText: 'Masukkan password baru',
                     hintStyle: const TextStyle(color: Colors.white54),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isNewPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isNewPasswordVisible = !_isNewPasswordVisible;
+                        });
+                      },
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(color: Colors.white),
@@ -104,12 +120,23 @@ class _LupapaswordPagesState extends State<LupapaswordPages> {
                 TextField(
                   style: const TextStyle(color: Colors.white),
                   controller: _confirmPasswordController,
-                  obscureText: true,
+                  obscureText: !_isConfirmPasswordVisible,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: const Color(0xFF125587),
                     hintText: 'Konfirmasi password baru',
                     hintStyle: const TextStyle(color: Colors.white54),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isConfirmPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+                        });
+                      },
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(color: Colors.white),

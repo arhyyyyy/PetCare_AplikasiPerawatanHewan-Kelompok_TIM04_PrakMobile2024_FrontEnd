@@ -9,6 +9,8 @@ class JadwalAdmin {
 }
 
 class JadwalAdminPage extends StatefulWidget {
+  const JadwalAdminPage({super.key});
+
   @override
   _JadwalAdminPageState createState() => _JadwalAdminPageState();
 }
@@ -51,12 +53,18 @@ class _JadwalAdminPageState extends State<JadwalAdminPage> {
     );
   }
 
-  // Fungsi untuk navigasi ke halaman tambah/edit
+  //navigasi ke halaman tambah/edit
   void navigateToForm({JadwalAdmin? jadwal, int? index}) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => FormJadwalPage(jadwal: jadwal),
+        builder: (context) {
+          if (jadwal != null) {
+            return EditJadwalPage(jadwal: jadwal);
+          } else {
+            return const TambahJadwalPage();
+          }
+        },
       ),
     );
 
@@ -76,6 +84,7 @@ class _JadwalAdminPageState extends State<JadwalAdminPage> {
     return Scaffold(
       backgroundColor: const Color(0xFF125587), // Background utama
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xFF125587), // Warna AppBar
       ),
       body: ListView.builder(

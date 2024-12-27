@@ -14,10 +14,15 @@ class _RegistrasiPagesState extends State<RegistrasiPages> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
+  // Variabel untuk toggle visibility password
+  bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xFF125587),
         centerTitle: true,
         title: const Text(
@@ -79,12 +84,23 @@ class _RegistrasiPagesState extends State<RegistrasiPages> {
                 TextField(
                   style: const TextStyle(color: Colors.white),
                   controller: _passwordController,
-                  obscureText: true,
+                  obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: const Color(0xFF125587),
                     hintText: 'Masukkan password',
                     hintStyle: const TextStyle(color: Colors.white54),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                        color: Colors.white54,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(color: Colors.white),
@@ -105,12 +121,23 @@ class _RegistrasiPagesState extends State<RegistrasiPages> {
                 TextField(
                   style: const TextStyle(color: Colors.white),
                   controller: _confirmPasswordController,
-                  obscureText: true,
+                  obscureText: !_isConfirmPasswordVisible,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: const Color(0xFF125587),
                     hintText: 'Konfirmasi password',
                     hintStyle: const TextStyle(color: Colors.white54),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isConfirmPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                        color: Colors.white54,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+                        });
+                      },
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(color: Colors.white),
@@ -197,9 +224,7 @@ class _RegistrasiPagesState extends State<RegistrasiPages> {
                     },
                     child: const Text(
                       'Login',
-                      style: TextStyle(
-                        color: Colors.white
-                      ),
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),

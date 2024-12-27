@@ -7,7 +7,9 @@ class ProfileAdminPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profil Admin'),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('Profil Admin',
+        style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF125587),
         centerTitle: true,
       ),
@@ -50,7 +52,6 @@ class ProfileAdminPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 30),
-              // Additional Information Section
               Card(
                 elevation: 3,
                 shape: RoundedRectangleBorder(
